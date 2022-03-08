@@ -40,6 +40,7 @@ ALLOWED_EXTENSIONS = ['xmind']
 DEBUG = True
 DATABASE = os.path.join(here, 'data.db3')
 HOST = '0.0.0.0'
+member = ''
 
 # flask app
 app = Flask(__name__)
@@ -198,6 +199,7 @@ def verify_uploaded_files(files):
 
 @app.route('/', methods=['GET', 'POST'])
 def index(download_xml=None):
+    global member
     g.invalid_files = []
     g.error = None
     g.download_xml = download_xml
@@ -206,7 +208,7 @@ def index(download_xml=None):
     if request.method == 'POST':
         if 'file' not in request.files:
             return redirect(request.url)
-
+        member = request.form['member']
         file = request.files['file']
 
         if file.filename == '':
@@ -232,12 +234,13 @@ def uploaded_file(filename):
 
 @app.route('/<filename>/to/testlink')
 def download_testlink_file(filename):
+    global member
     full_path = join(app.config['UPLOAD_FOLDER'], filename)
 
     if not exists(full_path):
         abort(404)
 
-    testlink_xmls_file = xmind_to_testlink_xml_file(full_path)
+    testlink_xmls_file = xmind_to_testlink_xml_file(full_path, member)
     filename = os.path.basename(testlink_xmls_file) if testlink_xmls_file else abort(404)
 
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
@@ -270,7 +273,7 @@ def preview_file(filename):
 
     testcases = get_xmind_testcase_list(full_path)
 
-    return render_template('preview.html', name=filename, suite=testcases, suite_count=suite_count)
+    return render_template('preview.html', name=filename, suite=testcases, suite_count=suite_count, member=member)
 
 
 @app.route('/delete/<filename>/<int:record_id>')

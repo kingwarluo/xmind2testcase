@@ -75,7 +75,13 @@ def sheet_to_suite(root_topic):
     suite.sub_suites = []
 
     for suite_dict in root_topic['topics']:
-        suite.sub_suites.append(parse_testsuite(suite_dict))
+        """增加第二级suite"""
+        suite2 = TestSuite()
+        suite2.name = suite_dict['title']
+        suite2.sub_suites = []
+        for suite2_dict in suite_dict['topics']:
+            suite2.sub_suites.append(parse_testsuite(suite2_dict))
+        suite.sub_suites.append(suite2)
 
     return suite
 

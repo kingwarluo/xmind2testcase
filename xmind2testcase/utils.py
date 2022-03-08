@@ -91,11 +91,14 @@ def get_xmind_testcase_list(xmind_file):
     for testsuite in testsuites:
         product = testsuite.name
         for suite in testsuite.sub_suites:
-            for case in suite.testcase_list:
-                case_data = case.to_dict()
-                case_data['product'] = product
-                case_data['suite'] = suite.name
-                testcases.append(case_data)
+            module = suite.name
+            for suite2 in suite.sub_suites:
+                for case in suite2.testcase_list:
+                    case_data = case.to_dict()
+                    case_data['product'] = product
+                    case_data['module'] = module
+                    case_data['suite'] = suite2.name
+                    testcases.append(case_data)
 
     logging.info('Convert XMind file(%s) to testcases dict data successfully!', xmind_file)
     return testcases

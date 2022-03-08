@@ -13,10 +13,13 @@ from xml.etree.ElementTree import Element, SubElement, ElementTree, Comment
 """
 Convert XMind fie to TestLink testcase xml file 
 """
+member=''
+demand=''
 
-
-def xmind_to_testlink_xml_file(xmind_file, is_all_sheet=True):
+def xmind_to_testlink_xml_file(xmind_file, user='', is_all_sheet=True):
     """Convert a XMind sheet to a testlink xml file"""
+    global member
+    member = user
     xmind_file = get_absolute_path(xmind_file)
     logging.info('Start converting XMind file(%s) to testlink file...', xmind_file)
     testsuites = get_xmind_testsuites(xmind_file)
@@ -44,6 +47,8 @@ def testsuites_to_xml_content(testsuites):
     # setting the root suite's name attribute, that will generate a new testsuite folder on testlink
     # root_element.set(const.ATTR_NMAE, testsuite.name)
 
+    global demand
+    demand = testsuites[0].name
     for testsuite in testsuites:
         suite_element = SubElement(root_element, const.TAG_TESTSUITE)
         suite_element.set(const.ATTR_NMAE, testsuite.name)
@@ -55,7 +60,14 @@ def testsuites_to_xml_content(testsuites):
             sub_suite_element = SubElement(suite_element, const.TAG_TESTSUITE)
             sub_suite_element.set(const.ATTR_NMAE, sub_suite.name)
             gen_text_element(sub_suite_element, const.TAG_DETAILS, sub_suite.details)
-            gen_testcase_element(sub_suite_element, sub_suite)
+            """增加一层for"""
+            for sub_suite2 in sub_suite.sub_suites:
+                if is_should_skip(sub_suite2.name):
+                    continue
+                sub_suite_element2 = SubElement(sub_suite_element, const.TAG_TESTSUITE)
+                sub_suite_element2.set(const.ATTR_NMAE, sub_suite2.name)
+                gen_text_element(sub_suite_element2, const.TAG_DETAILS, sub_suite2.details)
+                gen_testcase_element(sub_suite_element2, sub_suite2)
 
     testlink = ElementTree(root_element)
     content_stream = BytesIO()
@@ -85,6 +97,18 @@ def gen_testcase_element(suite_element, suite):
         status.text = str(testcase.status) if testcase.status in (1, 2, 3, 4, 5, 6, 7) else '7'
 
         gen_steps_element(testcase_elment, testcase)
+
+        gen_custom_field_element(testcase_elment)
+
+def gen_custom_field_element(testcase_element):
+    custom_field_element = SubElement(testcase_element, const.TAG_CUSTOM_FIELDS)
+    field_element1 = SubElement(custom_field_element, const.TAG_CUSTOM_FIELD)
+    gen_text_element(field_element1, const.ATTR_NMAE, '需求名称')
+    gen_text_element(field_element1, const.ATTR_VALUE, demand)
+
+    field_element2 = SubElement(custom_field_element, const.TAG_CUSTOM_FIELD)
+    gen_text_element(field_element2, const.ATTR_NMAE, '创建人')
+    gen_text_element(field_element2, const.ATTR_VALUE, member)
 
 
 def gen_steps_element(testcase_element, testcase):
@@ -153,6 +177,6 @@ def _convert_importance(value):
 
 
 if __name__ == '__main__':
-    xmind_file = '../docs/xmind_testcase_template.xmind'
+    xmind_file = '../docs/需求名称.xmind'
     testlink_xml_file = xmind_to_testlink_xml_file(xmind_file)
     print('Convert XMind file to testlink xml file successfully: %s', testlink_xml_file)

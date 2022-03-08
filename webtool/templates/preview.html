@@ -10,6 +10,7 @@
 <body>
 <div class="header">
     <h1>{{ name }} - Preview</h1>
+    <h1>测试人员 -- {{ member }}</h1>
     <h2>TestSuites: {{ suite_count }} / TestCases: {{ suite | length }}
         / <a href="{{ url_for("download_zentao_file",filename= name) }}">Get Zentao CSV</a>
         / <a href="{{ url_for("download_testlink_file",filename= name) }}">Get TestLink XML</a>
@@ -19,6 +20,8 @@
     <thead>
     <tr>
         <th width="5%">#</th>
+        <th width="10%">Product</th>
+        <th width="10%">Module</th>
         <th width="10%">Suite</th>
         <th>Title</th>
         <th width="200px">Attributes</th>
@@ -29,6 +32,8 @@
     {% for test in suite %}
         <tr>
             <td>{{ loop.index }}</td>
+            <td>{{ test.product }}</td>
+            <td>{{ test.module }}</td>
             <td>{{ test.suite }}</td>
             <td {% if test.name|length>100 %}class="long-name" {% endif %}>{{ test.name }}
                 {% if test.name|length>100 %}
