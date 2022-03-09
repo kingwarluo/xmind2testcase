@@ -8,9 +8,9 @@ import sqlite3
 from contextlib import closing
 from os.path import join, exists
 from werkzeug.utils import secure_filename
-from tajia.zentao import xmind_to_zentao_csv_file
-from tajia.testlink import xmind_to_testlink_xml_file
-from tajia.utils import get_xmind_testsuites, get_xmind_testcase_list
+from zentao import xmind_to_zentao_csv_file
+from testlink import xmind_to_testlink_xml_file
+from utils import get_xmind_testsuites, get_xmind_testcase_list
 from flask import Flask, request, send_from_directory, g, render_template, abort, redirect, url_for
 
 here = os.path.abspath(os.path.dirname(__file__))

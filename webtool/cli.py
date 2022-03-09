@@ -2,9 +2,9 @@
 # _*_ coding:utf-8 _*_
 import logging
 import sys
-from tajia.zentao import xmind_to_zentao_csv_file
-from tajia.testlink import xmind_to_testlink_xml_file
-from tajia.utils import get_absolute_path, xmind_testcase_to_json_file
+from zentao import xmind_to_zentao_csv_file
+from testlink import xmind_to_testlink_xml_file
+from utils import get_absolute_path, xmind_testcase_to_json_file
 from webtool.application import launch
 
 logging.basicConfig(level=logging.INFO,

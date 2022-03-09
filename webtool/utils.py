@@ -4,7 +4,7 @@ import json
 import os
 import xmind
 import logging
-from tajia.parser import xmind_to_testsuites
+from xmindparser import xmind_to_testsuites
 
 
 def get_absolute_path(path):

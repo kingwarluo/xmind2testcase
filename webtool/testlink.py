@@ -5,9 +5,9 @@ import os
 from io import BytesIO
 from xml.dom import minidom
 from xml.sax.saxutils import escape
-from tajia import const
-from tajia.parser import config
-from tajia.utils import get_xmind_testsuites, get_absolute_path
+import const
+from xmindparser import config
+from utils import get_xmind_testsuites, get_absolute_path
 from xml.etree.ElementTree import Element, SubElement, ElementTree, Comment
 
 """

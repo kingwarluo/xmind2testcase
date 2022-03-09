@@ -3,7 +3,7 @@
 import csv
 import logging
 import os
-from tajia.utils import get_xmind_testcase_list, get_absolute_path
+from utils import get_xmind_testcase_list, get_absolute_path
 
 """
 Convert XMind fie to Zentao testcase csv file 
