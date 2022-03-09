@@ -2,7 +2,7 @@
 # _*_ coding:utf-8 _*_
 
 import logging
-from xmind2testcase.metadata import TestSuite, TestCase, TestStep
+from tajia.metadata import TestSuite, TestCase, TestStep
 
 config = {'sep': ' ',
           'valid_sep': '&>+/-',
@@ -13,7 +13,7 @@ config = {'sep': ' ',
 
 
 def xmind_to_testsuites(xmind_content_dict):
-    """convert xmind file to `xmind2testcase.metadata.TestSuite` list"""
+    """convert xmind file to `tajia.metadata.TestSuite` list"""
     suites = []
 
     for sheet in xmind_content_dict:

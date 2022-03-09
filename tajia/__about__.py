@@ -1,4 +1,4 @@
-__title__ = 'xmind2testcase'
+__title__ = 'tajia'
 __description__ = 'XMind2TestCase基于Python实现，提供了一个高效测试用例设计的解决方案！'
 __keywords__ = 'xmind2testCase, testcase, test, testing, xmind, 思维导图, XMind思维导图',
 __url__ = 'https://github.com/zhuifengshen/xmind2testcase'
